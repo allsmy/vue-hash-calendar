@@ -601,7 +601,6 @@ export default {
     .calendar_body {
         position relative
         width 100%
-        margin-top px2vw(100px)
     }
 
     .calendar_week {

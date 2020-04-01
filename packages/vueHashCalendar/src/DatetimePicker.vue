@@ -8,23 +8,9 @@
     <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
          :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
         <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`}" @click.stop>
-            <div class="calendar_title" ref="calendarTitle">
-                <div class="calendar_title_date">
-                    <span v-if="pickerType !== 'time'" class="calendar_title_date_year"
-                          :class="{'calendar_title_date_active': isShowCalendar}"
-                          @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
-                    <span v-if="pickerType !== 'date'" class="calendar_title_date_time"
-                          :class="{'calendar_title_date_active': !isShowCalendar}"
-                          @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
-                </div>
-                <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">{{ language.TODAY }}</div>
-                <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">{{ language.CONFIRM }}</div>
-            </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="{...$props, ...$attrs}" @height="heightChange"
                       :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                       @change="dateChange" @click="dateClick"></calendar>
-            <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
-                         v-bind="{...$props, ...$attrs}" @change="timeChange"></time-picker>
         </div>
     </div>
 </template>
@@ -133,10 +119,6 @@ export default {
     visible: {
       handler(val) {
         this.isShowCalendar = val
-
-        this.$nextTick(() => {
-          this.calendarTitleHeight = this.$refs.calendarTitle.offsetHeight
-        })
       },
       immediate: true
     }
@@ -255,7 +237,6 @@ export default {
         position absolute
         width 100%
         left 0
-        bottom 0
         display flex
         padding-bottom px2vw(26px)
         flex-wrap wrap

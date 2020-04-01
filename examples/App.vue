@@ -28,7 +28,7 @@
                        @change="dateChange">
     </vue-hash-calendar>
     <!--github入口-->
-    <github></github>
+<!--    <github></github>-->
   </div>
 </template>
 
