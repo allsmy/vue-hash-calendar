@@ -192,8 +192,7 @@ export default {
     heightChange(height) { // 高度变化
       if (!this.firstTimes && this.model === 'dialog') return
 
-      this.calendarContentHeight = height + this.calendarTitleHeight
-      this.firstTimes = false
+      this.calendarContentHeight = height
     },
     touchStart(event) { // 监听手指开始滑动事件
       this.$emit('touchstart', event)
