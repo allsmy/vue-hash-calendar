@@ -5,14 +5,17 @@
 * @Email:          t@tsy6.com
 */
 <template>
-    <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
-         :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
-        <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`}" @click.stop>
-            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="{...$props, ...$attrs}" @height="heightChange"
-                      :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
-                      @change="dateChange" @click="dateClick"></calendar>
+    <div>
+        <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
+             :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
+            <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`, 'background-color': `${mainBackgroundColor}`}" @click.stop>
+                <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="bindFields" @height="heightChange"
+                          :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
+                          @change="dateChange" @click="dateClick"></calendar>
+            </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -62,6 +65,10 @@ export default {
     lang: {
       type: String,
       default: 'CN'
+    },
+    mainBackgroundColor: {
+      type: String,
+      default: '#0e8ee9'
     }
   },
   components: {
@@ -131,6 +138,10 @@ export default {
       set(val) {
         this.$emit('update:visible', val)
       }
+    },
+    bindFields() {
+      let fs = {...this.$props, ...this.$attrs}
+      return fs
     }
   },
   methods: {
@@ -193,6 +204,7 @@ export default {
       if (!this.firstTimes && this.model === 'dialog') return
 
       this.calendarContentHeight = height
+      this.$emit('height', height)
     },
     touchStart(event) { // 监听手指开始滑动事件
       this.$emit('touchstart', event)
@@ -214,13 +226,9 @@ export default {
     @import "../style/common.styl"
 
     .hash-calendar {
-        position fixed
         width 100vw
-        height 100vh
-        top 0
-        left 0
-        background rgba(0, 0, 0, .6)
         z-index 999
+        color #ffffff
     }
 
     .calendar_inline {
@@ -239,7 +247,8 @@ export default {
         display flex
         padding-bottom px2vw(26px)
         flex-wrap wrap
-        background white
+        /*background main-color*/
+        color #ffffff
         height px2vw(710px)
         overflow hidden
     }
