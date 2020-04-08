@@ -1,13 +1,13 @@
 {
   "name": "vue-hash-calendar-slide",
   "version": "1.3.6",
-  "author": "HashTang",
+  "author": "allsmy",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TangSY/vue-hash-calendar.git"
+    "url": "https://github.com/allsmy/vue-hash-calendar-slide"
   },
   "bugs": {
-    "url": "https://github.com/TangSY/vue-hash-calendar/issues"
+    "url": "https://github.com/allsmy/vue-hash-calendar-slide/issues"
   },
   "homepage": "https://www.hxkj.vip",
   "license": "MIT",
