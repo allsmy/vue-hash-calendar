@@ -5,28 +5,17 @@
 * @Email:          t@tsy6.com
 */
 <template>
-    <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
-         :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
-        <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`}" @click.stop>
-            <div class="calendar_title" ref="calendarTitle">
-                <div class="calendar_title_date">
-                    <span v-if="pickerType !== 'time'" class="calendar_title_date_year"
-                          :class="{'calendar_title_date_active': isShowCalendar}"
-                          @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
-                    <span v-if="pickerType !== 'date'" class="calendar_title_date_time"
-                          :class="{'calendar_title_date_active': !isShowCalendar}"
-                          @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
-                </div>
-                <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">{{ language.TODAY }}</div>
-                <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">{{ language.CONFIRM }}</div>
+    <div>
+        <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
+             :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
+            <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`, 'background-color': `${mainBackgroundColor}`}" @click.stop>
+                <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="bindFields" @height="heightChange"
+                          :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
+                          @change="dateChange" @click="dateClick"></calendar>
             </div>
-            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="{...$props, ...$attrs}" @height="heightChange"
-                      :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
-                      @change="dateChange" @click="dateClick"></calendar>
-            <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
-                         v-bind="{...$props, ...$attrs}" @change="timeChange"></time-picker>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -76,6 +65,10 @@ export default {
     lang: {
       type: String,
       default: 'CN'
+    },
+    mainBackgroundColor: {
+      type: String,
+      default: '#0e8ee9'
     }
   },
   components: {
@@ -133,10 +126,6 @@ export default {
     visible: {
       handler(val) {
         this.isShowCalendar = val
-
-        this.$nextTick(() => {
-          this.calendarTitleHeight = this.$refs.calendarTitle.offsetHeight
-        })
       },
       immediate: true
     }
@@ -149,6 +138,10 @@ export default {
       set(val) {
         this.$emit('update:visible', val)
       }
+    },
+    bindFields() {
+      let fs = {...this.$props, ...this.$attrs}
+      return fs
     }
   },
   methods: {
@@ -210,8 +203,8 @@ export default {
     heightChange(height) { // 高度变化
       if (!this.firstTimes && this.model === 'dialog') return
 
-      this.calendarContentHeight = height + this.calendarTitleHeight
-      this.firstTimes = false
+      this.calendarContentHeight = height
+      this.$emit('height', height)
     },
     touchStart(event) { // 监听手指开始滑动事件
       this.$emit('touchstart', event)
@@ -233,13 +226,9 @@ export default {
     @import "../style/common.styl"
 
     .hash-calendar {
-        position fixed
         width 100vw
-        height 100vh
-        top 0
-        left 0
-        background rgba(0, 0, 0, .6)
         z-index 999
+        color #ffffff
     }
 
     .calendar_inline {
@@ -255,11 +244,11 @@ export default {
         position absolute
         width 100%
         left 0
-        bottom 0
         display flex
         padding-bottom px2vw(26px)
         flex-wrap wrap
-        background white
+        /*background main-color*/
+        color #ffffff
         height px2vw(710px)
         overflow hidden
     }
