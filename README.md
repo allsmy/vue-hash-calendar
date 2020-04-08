@@ -6,9 +6,7 @@
 
 # 按照惯例，先上效果图
 
-![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif)
-![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif)
-![week.gif](https://www.hxkj.vip/demo/calendar/week.gif)
+![calendar.gif](https://www.allsmy.com/resource/vue-hash-calendar-slide.gif)
 
 # vue-hash-calendar
 
