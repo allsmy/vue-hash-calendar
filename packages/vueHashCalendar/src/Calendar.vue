@@ -359,6 +359,7 @@ export default {
       return dayOfWeek
     },
     clickCalendarDay(date) { // 点击日历上的日期
+      if (this.isTouching) return
       if (!date) return
 
       if (this.formatDisabledDate(date)) return
