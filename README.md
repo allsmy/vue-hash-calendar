@@ -20,7 +20,7 @@
 # 安装使用说明
 
 ```
-npm i vue-hash-calendar
+npm i vue-hash-calendar-slide
 ```
 
 ```
