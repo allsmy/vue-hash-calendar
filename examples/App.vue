@@ -8,7 +8,7 @@
   <div class="body">
     <vue-hash-calendar ref="picker"
                        model="dialog"
-                       :scroll-change-date="true"
+                       :scroll-change-date="false"
                        :visible.sync="isShowCalendar"
                        :default-datetime="defaultDatetime"
                        :is-show-week-view="true"
