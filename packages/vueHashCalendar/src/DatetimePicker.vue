@@ -229,6 +229,7 @@ export default {
         width 100vw
         z-index 999
         color #ffffff
+        display table
     }
 
     .calendar_inline {
