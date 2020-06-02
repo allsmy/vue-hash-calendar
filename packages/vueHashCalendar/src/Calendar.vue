@@ -20,7 +20,7 @@
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
                          :class="{'calendar_item_disable': formatDisabledDate(date)}"
                          @click="clickCalendarDay(date)">
-                        <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
+                        <p v-if="date.day === 1"
                            class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color')}"
                            :class="{}">{{ language.MONTH && language.MONTH[date.month] }}</p>
                         <p v-else class="calendar_day" ref="calendarDay" :style="{'border-color': markDateColor(date, 'circle'), 'border': calendar_mark_circle_fun(date, 'circle'),'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color')}"
@@ -44,7 +44,7 @@ export default {
     // 滑动的时候，是否触发改变日期
     scrollChangeDate: {
       type: Boolean,
-      default: true
+      default: false
     },
     // 禁用周视图
     disabledWeekView: {
@@ -391,6 +391,7 @@ export default {
     },
     calendar_day_checked_fun(date, type) { // 该日期是否为选中的日期
       if (this.formatDisabledDate(date)) return false
+      if (this.isTouching) return false
 
       let ret = this.checkedDate.year === date.year && this.checkedDate.month === date.month && this.checkedDate.day === date.day
       if (ret) {
@@ -441,7 +442,9 @@ export default {
         if (this.touch.x > 0) {
           this.$emit('slidechange', 'right')
 
-          this.getLastMonth()
+          setTimeout(() => {
+            this.getLastMonth()
+          }, 1)
           if (this.isShowWeek) {
             setTimeout(() => {
               this.isTouching = true
@@ -452,7 +455,9 @@ export default {
         } else if (this.touch.x < 0) {
           this.$emit('slidechange', 'left')
 
-          this.getNextMonth()
+          setTimeout(() => {
+            this.getNextMonth()
+          }, 1)
           if (this.isShowWeek) {
             setTimeout(() => {
               this.isTouching = true
