@@ -24,7 +24,7 @@
                            class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color')}"
                            :class="{}">{{ language.MONTH && language.MONTH[date.month] }}</p>
                         <p v-else class="calendar_day" ref="calendarDay" :style="{'border-color': markDateColor(date, 'circle'), 'border': calendar_mark_circle_fun(date, 'circle'),'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color')}"
-                           :class="{'calendar_day_today': isToday(date), 'calendar_day_not': isNotCurrentMonthDay(date,i)}">
+                           :class="{'calendar_day_today': isToday(date), 'calendar_day_not': isNotCurrentMonthDay(date,i),'calendar_day_checked': isCheckedDay(date)}">
                             {{ date.day }}</p>
                         <div :style="{'background': markDateColor(date, 'dot')}" class="calendar_dot"></div>
                     </div>
