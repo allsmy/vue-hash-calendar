@@ -95,6 +95,10 @@ export default {
     mainBackgroundColor: {
       type: String,
       default: '#0e8ee9'
+    },
+    circleBackgroundColor: {
+      type: String,
+      default: 'white'
     }
   },
   data() {
@@ -396,7 +400,7 @@ export default {
       let ret = this.checkedDate.year === date.year && this.checkedDate.month === date.month && this.checkedDate.day === date.day
       if (ret) {
         if (type === 'color') return this.mainBackgroundColor
-        if (type === 'background') return '#ffffff'
+        if (type === 'background') return this.circleBackgroundColor
       }
       return ''
     },
