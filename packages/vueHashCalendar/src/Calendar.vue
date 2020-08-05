@@ -99,6 +99,11 @@ export default {
     circleBackgroundColor: {
       type: String,
       default: 'white'
+    },
+    // 上下左右 对应的值为 'up' 'down' 'left' 'right'
+    swipeStatus: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -363,7 +368,7 @@ export default {
       return dayOfWeek
     },
     clickCalendarDay(date) { // 点击日历上的日期
-      if (this.isTouching) return
+      if (!!this.swipeStatus || this.isTouching) return
       if (!date) return
 
       if (this.formatDisabledDate(date)) return
