@@ -21,8 +21,7 @@
                          :class="{'calendar_item_disable': formatDisabledDate(date)}"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1"
-                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color')}"
-                           :class="{}">{{ language.MONTH && language.MONTH[date.month] }}</p>
+                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color'), 'font-size': dateFontsize(date.month)}">{{ language.MONTH && language.MONTH[date.month] }}</p>
                         <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color')}"
                            :class="{'calendar_day_today': isToday(date), 'calendar_day_not': isNotCurrentMonthDay(date,i),'calendar_day_checked': isCheckedDay(date)}">
                             {{ date.day }}</p>
@@ -400,6 +399,12 @@ export default {
       }
       return ''
     },
+    dateFontsize(month) {
+      if (month > 8) {
+        return (12 / 750 * 100).toString() + 'vw'
+      }
+      return ''
+    },
     isNotCurrentMonthDay(date, index) { // 非本月日期
       let dateOfCurrentShow = this.calendarOfMonth[index][15]// 本月中间的日期一定为本月
       return date.year !== dateOfCurrentShow.year || date.month !== dateOfCurrentShow.month
@@ -606,6 +611,7 @@ export default {
       try {
         if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'dot') return currentDateObj.color
       } catch (e) {
+        // e
       }
       return ''
     },

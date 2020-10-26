@@ -6,12 +6,12 @@
 */
 <template>
     <div class="body">
-        <vue-hash-calendar
+        <vue-hash-calendar-slide
                 @touchstart="touchStart"
                 @touchmove="touchMove"
                 @slidechange="slideChange"
                 @touchend="touchEnd">
-        </vue-hash-calendar>
+        </vue-hash-calendar-slide>
         <!--github入口-->
         <github></github>
     </div>

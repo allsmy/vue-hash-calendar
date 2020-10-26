@@ -9,11 +9,10 @@
   "bugs": {
     "url": "https://github.com/allsmy/vue-hash-calendar-slide/issues"
   },
-  "homepage": "https://www.hxkj.vip",
   "license": "MIT",
   "description": "vue 周 月 时间选择器",
   "main": "lib/vue-hash-calendar-slide.umd.min.js",
-  "keyword": "vue-hash-calendar calendar date-picker datetime-picker time-picker week-picker",
+  "keyword": "vue-hash-calendar-slide calendar date-picker datetime-picker time-picker week-picker",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",

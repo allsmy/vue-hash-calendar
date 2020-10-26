@@ -75,7 +75,7 @@ export default {
     TimePicker,
     Calendar
   },
-  name: 'VueHashCalendar',
+  name: 'vueHashCalendarSlide',
   data() {
     return {
       language: {}, // 使用的语言包

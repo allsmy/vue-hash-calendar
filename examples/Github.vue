@@ -5,7 +5,7 @@
 * @CreateDate:     2019/5/9 23:18
 */
 <template>
-    <a href="https://github.com/TangSY/vue-hash-calendar" class="github-corner" aria-label="View source on GitHub"
+    <a href="https://github.com/allsmy/vue-hash-calendar-slide" class="github-corner" aria-label="View source on GitHub"
        target="_blank">
         <svg width="80" height="80" viewBox="0 0 250 250"
              style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">

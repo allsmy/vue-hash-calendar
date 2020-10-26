@@ -1,19 +1,13 @@
-[![Build Status](https://travis-ci.org/TangSY/vue-hash-calendar.svg?branch=master)](https://travis-ci.org/TangSY/vue-hash-calendar)
-[![version](https://img.shields.io/npm/v/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
-[![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
-[![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
-
-# 按照惯例，先上效果图
-
 ![calendar.gif](https://www.allsmy.com/resource/vue-hash-calendar-slide.gif)
 
-# vue-hash-calendar
+# vue-hash-calendar-slide
 
+- 增加更换背景色
+- 增加日期背景色标记
 - 基于 vue 2.X 开发的日历组件
 - 支持手势滑动操作
 - 原生 js 开发，没引入第三方库
-- 上下滑动 切换 周/月 模式
+- 上下滑动 切换 周/月 模式， 另增加外部传参控制上下滑动，方便复杂页面集成
   > 【周模式中】 左右滑动可切换 上一周/下一周
   > 【月模式中】 左右滑动可切换 上一月/下一月
 
@@ -25,27 +19,19 @@ npm i vue-hash-calendar-slide
 
 ```
 // 在入口文件中（main.js），导入组件库
-import vueHashCalendar from 'vue-hash-calendar'
+import vueHashCalendarSlide from 'vue-hash-calendar-slide'
 // 引入组件CSS样式
-import 'vue-hash-calendar/lib/vue-hash-calendar.css'
+import 'vue-hash-calendar-slide/lib/vue-hash-calendar-slide.css'
 // 注册组件库
-Vue.use(vueHashCalendar)
+Vue.use(vueHashCalendarSlide)
 ```
 
 ```
 // 在VUE文件中引入组件
- <vue-hash-calendar></vue-hash-calendar>
+ <vue-hash-calendar-slide></vue-hash-calendar-slide>
 ```
 
-# Demo
-
-![demo_qrcode.png](https://www.hxkj.vip/demo/calendar/demo.webp)
-
-或者请用浏览器的手机模式查看：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/calendar/)
-
-- 🎉 觉得好用可以给一个 star 哦~~ 🎉
-
-## github 地址：[https://github.com/TangSY/vue-hash-calendar](https://github.com/TangSY/vue-hash-calendar)
+## github 地址：[https://github.com/allsmy/vue-hash-calendar-slide](https://github.com/allsmy/vue-hash-calendar-slide)
 
 # API
 
@@ -62,8 +48,7 @@ Vue.use(vueHashCalendar)
 | isShowWeekView   | 是否以周视图展示组件                                                                                                                                  | Boolean  |     false      |    否    |
 | disabledWeekView | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                                                                                               | Boolean  |     false      |    否    |
 | disabledDate     | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean （禁用该日期需返回 true）                                                                        | Function |      ---       |    否    |
-| markDate         | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20'] |  Array   |       []       |    否    |
-| markType         | 标记图案类型 dot：小圆点（日期下方小圆点标记） circle：小圆圈（日期被小圆圈包围） dot+circle：同时使用小圆点与圆圈标记                                |  String  |      dot       |    否    |
+| markDate         | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',type: 'background', date: ['2019/02/25']},{color: 'blue', type: 'dot', date: ['2019/01/20']},'2019/03/20'] |  Array   |       []       |    否    |
 | minuteStep       | 间隔时间。（分钟的步长）                                                                                                                              |  Number  |       1        |    否    |
 | lang             | 选择的语言版本。可选值:['CN', 'EN']                                                                                                                   |  String  |       CN       |    否    |
 
@@ -79,16 +64,13 @@ Vue.use(vueHashCalendar)
 | touchend    | 日历滑动 end 事件，同于原生该事件。                                                       | （event: touch 事件）              |
 | slidechange | 日历滑动的方向。返回值：right、left、up、down 。                                          | （direction: 滑动的方向）          |
 
-## 版本记录
-
-[changelog](https://github.com/TangSY/vue-hash-calendar/blob/travis_build/CHANGELOG.md)
 
 ## Other
 
 - 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
 
 ```
-<vue-hash-calendar :visible.sync="isShowCalendar"></vue-hash-calendar>
+<vue-hash-calendar-slide :visible.sync="isShowCalendar"></vue-hash-calendar-slide>
 
 //设置为true
 this.isShowCalendar = true;
@@ -97,14 +79,14 @@ this.isShowCalendar = true;
 - 想要返回标准的英文格式日期，format 属性应该怎样写？ `MM DD,YY at hh:mm F`
 
 ```
-<vue-hash-calendar format="MM DD,YY at hh:mm F"></vue-hash-calendar>
+<vue-hash-calendar-slide format="MM DD,YY at hh:mm F"></vue-hash-calendar-slide>
 
 ```
 
 - 想要返回 12 小时制的日期，format 属性应该怎样写？ 在格式化字符串后面加上大写 `F`
 
 ```
-<vue-hash-calendar format="YY/MM/DD hh:mm F"></vue-hash-calendar>
+<vue-hash-calendar-slide format="YY/MM/DD hh:mm F"></vue-hash-calendar-slide>
 
 ```
 
@@ -114,7 +96,7 @@ this.isShowCalendar = true;
 // 例如禁用今日之后的所有日期
 
 /** vue模板文件 **/
-<vue-hash-calendar :disabled-date="disabledDate"></vue-hash-calendar>
+<vue-hash-calendar-slide :disabled-date="disabledDate"></vue-hash-calendar-slide>
 
 /** vue methods 中的方法 **/
 disabledDate(date) {
@@ -127,8 +109,4 @@ disabledDate(date) {
 }
 ```
 
-- 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者 github 提交 issue。
-
-## 赞助
-
-![pay.jpg](https://www.hxkj.vip/demo/calendar/pay.jpg)
+- 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 allsmy.com@gmail.com，或者 github 提交 issue。

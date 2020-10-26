@@ -3,13 +3,13 @@
  * @Author:         TSY
  * @CreateDate:     2019/8/31 12:30
  */
-import './vueHashCalendar/style/reset.styl'
+import './vueHashCalendarSlide/style/reset.styl'
 
 // 导入时间选择器组件
-import vueHashCalendar from './vueHashCalendar'
+import vueHashCalendarSlide from './vueHashCalendarSlide'
 // 存储组件列表
 const components = [
-  vueHashCalendar
+  vueHashCalendarSlide
 ]
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
 const install = function(Vue) {
