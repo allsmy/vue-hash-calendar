@@ -23,10 +23,10 @@
                         <p v-if="date.day === 1"
                            class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color')}"
                            :class="{}">{{ language.MONTH && language.MONTH[date.month] }}</p>
-                        <p v-else class="calendar_day" ref="calendarDay" :style="{'border-color': markDateColor(date, 'circle'), 'border': calendar_mark_circle_fun(date, 'circle'),'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color')}"
+                        <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color')}"
                            :class="{'calendar_day_today': isToday(date), 'calendar_day_not': isNotCurrentMonthDay(date,i),'calendar_day_checked': isCheckedDay(date)}">
                             {{ date.day }}</p>
-                        <div :style="{'background': markDateColor(date, 'dot')}" class="calendar_dot"></div>
+                        <div :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
                     </div>
                 </li>
             </ul>
@@ -74,11 +74,6 @@ export default {
     markDate: {
       type: Array,
       default: () => []
-    },
-    // 日期标记类型
-    markType: {
-      type: String,
-      default: 'dot'
     },
     // 禁用的日期
     disabledDate: {
@@ -158,27 +153,13 @@ export default {
     markDate: {
       handler(val) {
         val.forEach((item, index) => {
-          if (item.color === undefined) {
-            let obj = {}
-            obj.color = '#1c71fb'
-            if (typeof item === 'string' || typeof item === 'number') {
-              item = [item]
-            }
-            obj.date = item || []
-            val[index] = obj
-          }
-
-          /* val[index].forEach(dateObj => {
-            this.$set(this.markDateColorObj, this.formatDate(dateObj.date), dateObj.color)
-          }) 待简化 */
-
           val[index].date = this.dateFormat(val[index].date)
         })
 
         this.markDateColorObj = []
         val.forEach(item => {
           item.date.forEach(date => {
-            this.$set(this.markDateColorObj, date, item.color)
+            this.$set(this.markDateColorObj, date, {color: item.color, type: item.type})
           })
         })
       },
@@ -406,6 +387,16 @@ export default {
       if (ret) {
         if (type === 'color') return this.mainBackgroundColor
         if (type === 'background') return this.circleBackgroundColor
+      } else {
+        let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
+        const currentDateObj = this.markDateColorObj[dateString]
+        try {
+          if (typeof currentDateObj !== 'undefined' && currentDateObj.type === type) {
+            return currentDateObj.color
+          }
+        } catch (e) {
+          return ''
+        }
       }
       return ''
     },
@@ -609,20 +600,13 @@ export default {
       }
       this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow)
     },
-    markDateColor(date, type) { // 当前日期是否需要标记
-      if (this.markType.indexOf(type) === -1) return
-
+    markDateDotColor(date) { // 当前日期是否需要标记
       let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
-
-      return this.markDateColorObj[dateString]
-    },
-    calendar_mark_circle_fun(date, type) { // 当前日期是否需要标记
-      if (this.markType.indexOf(type) === -1) return
-
-      let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
-
-      let need = this.markDateColorObj[dateString]
-      if (need) return '1px solid ' + this.mainBackgroundColor
+      const currentDateObj = this.markDateColorObj[dateString]
+      try {
+        if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'dot') return currentDateObj.color
+      } catch (e) {
+      }
       return ''
     },
     formatDisabledDate(date) {
