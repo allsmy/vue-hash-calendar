@@ -21,7 +21,7 @@
                          :class="{'calendar_item_disable': formatDisabledDate(date)}" :style="{color: formatDisabledDate(date) ? disableColor : ''}"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1"
-                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color'), 'font-size': dateFontsize(date.month)}">{{ language.MONTH && language.MONTH[date.month] }}</p>
+                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ language.MONTH && language.MONTH[date.month] }}</p>
                         <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i)}"
                            :class="{'calendar_day_today': isToday(date),'calendar_day_checked': isCheckedDay(date)}">
                             {{ date.day }}</p>
@@ -215,6 +215,16 @@ export default {
     },
     calendarGroupHeight(val) {
       this.$emit('height', val + this.calendarWeekTitleHeight)
+    },
+    swipeStatus(val) {
+      // 处理上下就够了，组件外的滑动触发的滑动
+      if (val === 'down' && this.isShowWeek) {
+        this.$emit('slidechange', 'down')
+        this.showMonth()
+      } else if (val === 'up' && !this.isShowWeek) {
+        this.$emit('slidechange', 'up')
+        this.showWeek()
+      }
     }
   },
   computed: {
