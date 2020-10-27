@@ -69,6 +69,10 @@ export default {
     mainBackgroundColor: {
       type: String,
       default: '#0e8ee9'
+    },
+    disableColor: {
+      type: String,
+      default: '#c0c4cc'
     }
   },
   components: {
@@ -285,9 +289,5 @@ export default {
     .calendar_confirm {
         color main-color
         margin-right px2vw(34px)
-    }
-
-    .today_disable {
-        color disabled-font-color
     }
 </style>

@@ -18,12 +18,12 @@
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonthShow" :key="i"
                     :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
-                         :class="{'calendar_item_disable': formatDisabledDate(date)}"
+                         :class="{'calendar_item_disable': formatDisabledDate(date)}" :style="{color: formatDisabledDate(date) ? disableColor : ''}"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1"
                            class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color'), 'font-size': dateFontsize(date.month)}">{{ language.MONTH && language.MONTH[date.month] }}</p>
-                        <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color')}"
-                           :class="{'calendar_day_today': isToday(date), 'calendar_day_not': isNotCurrentMonthDay(date,i),'calendar_day_checked': isCheckedDay(date)}">
+                        <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i)}"
+                           :class="{'calendar_day_today': isToday(date),'calendar_day_checked': isCheckedDay(date)}">
                             {{ date.day }}</p>
                         <div :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
                     </div>
@@ -98,6 +98,10 @@ export default {
     swipeStatus: {
       type: String,
       default: ''
+    },
+    disableColor: {
+      type: String,
+      default: '#c0c4cc'
     }
   },
   data() {
@@ -378,7 +382,7 @@ export default {
 
       return this.checkedDate.year === date.year && this.checkedDate.month === date.month && this.checkedDate.day === date.day
     },
-    calendar_day_checked_fun(date, type) { // 该日期是否为选中的日期
+    calendar_day_checked_fun(date, type, index) { // 该日期是否为选中的日期
       if (this.formatDisabledDate(date)) return false
       if (this.isTouching) return false
 
@@ -394,8 +398,11 @@ export default {
             return currentDateObj.color
           }
         } catch (e) {
-          return ''
+          // console.log(e)
         }
+      }
+      if (typeof index !== 'undefined' && this.isNotCurrentMonthDay(date, index)) {
+        return this.disableColor
       }
       return ''
     },
@@ -689,7 +696,6 @@ export default {
     .calendar_item_disable {
         opacity 1
         cursor not-allowed
-        color disabled-font-color
     }
 
     .calendar_day {

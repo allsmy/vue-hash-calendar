@@ -19,6 +19,8 @@
                        picker-type="datetime"
                        :show-today-button="true"
                        :disabled-week-view="false"
+                       :mainBackgroundColor="'#0e8ee9'"
+                       :disableColor="'#c0c4cc'"
                        format="YY/MM/DD hh:mm"
                        lang="CN"
                        @confirm="dateConfirm"
