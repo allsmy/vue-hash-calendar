@@ -418,7 +418,7 @@ export default {
     },
     dateFontsize(month) {
       if (month > 8) {
-        return (12 / 750 * 100).toString() + 'vw'
+        return (14 / 750 * 100).toString() + 'vw'
       }
       return ''
     },
