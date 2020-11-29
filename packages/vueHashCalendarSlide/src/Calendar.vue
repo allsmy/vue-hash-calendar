@@ -21,7 +21,7 @@
                          :class="{'calendar_item_disable': formatDisabledDate(date)}" :style="{color: formatDisabledDate(date) ? disableColor : ''}"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1"
-                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ language.MONTH && language.MONTH[date.month] }}</p>
+                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ showMonthUnit ? language.MONTH && language.MONTH[date.month] : date.day }}</p>
                         <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i)}"
                            :class="{'calendar_day_today': isToday(date),'calendar_day_checked': isCheckedDay(date)}">
                             {{ date.day }}</p>
@@ -102,6 +102,14 @@ export default {
     disableColor: {
       type: String,
       default: '#c0c4cc'
+    },
+    showMonthUnit: {
+      type: Boolean,
+      default: true
+    },
+    noSwipeUpDown: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -217,6 +225,7 @@ export default {
       this.$emit('height', val + this.calendarWeekTitleHeight)
     },
     swipeStatus(val) {
+      if (this.noSwipeUpDown) return ;
       // 处理上下就够了，组件外的滑动触发的滑动
       if (val === 'down' && this.isShowWeek) {
         this.$emit('slidechange', 'down')
@@ -228,11 +237,6 @@ export default {
     }
   },
   computed: {
-    calendar_mark_circle() {
-      return {
-        border: '1px solid ' + this.mainBackgroundColor
-      }
-    },
     calendar_day_checked() {
       return {
         background: '#ffffff',
@@ -417,8 +421,8 @@ export default {
       return ''
     },
     dateFontsize(month) {
-      if (month > 8) {
-        return (14 / 750 * 100).toString() + 'vw'
+      if (this.showMonthUnit && month > 8) {
+        return (16 / 750 * 100).toString() + 'vw'
       }
       return ''
     },
@@ -489,7 +493,7 @@ export default {
           }
         }
       }
-      if (Math.abs(this.touch.y) > Math.abs(this.touch.x) && Math.abs(this.touch.y * this.$refs.calendar.offsetHeight) > 50) {
+      if (!this.noSwipeUpDown && Math.abs(this.touch.y) > Math.abs(this.touch.x) && Math.abs(this.touch.y * this.$refs.calendar.offsetHeight) > 50) {
         if (this.touch.y > 0 && this.isShowWeek) {
           this.$emit('slidechange', 'down')
 
@@ -701,6 +705,7 @@ export default {
         width 14.13333335%
         flexContent()
         flex-direction column
+        position relative
     }
 
     .calendar_item_disable {
@@ -738,5 +743,7 @@ export default {
         width 5px
         height 5px
         border-radius 50%
+        position absolute
+        top: 25px
     }
 </style>
