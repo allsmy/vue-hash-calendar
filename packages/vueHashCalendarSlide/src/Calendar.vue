@@ -225,7 +225,7 @@ export default {
       this.$emit('height', val + this.calendarWeekTitleHeight)
     },
     swipeStatus(val) {
-      if (this.noSwipeUpDown) return ;
+      if (this.noSwipeUpDown) return
       // 处理上下就够了，组件外的滑动触发的滑动
       if (val === 'down' && this.isShowWeek) {
         this.$emit('slidechange', 'down')
