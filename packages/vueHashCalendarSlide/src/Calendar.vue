@@ -45,6 +45,11 @@ export default {
       type: Boolean,
       default: false
     },
+    // 滑动的时候，是否记住上一个位置，而不是重置的第一个日期
+    scrollChangeDateRememberDate: {
+      type: Boolean,
+      default: true
+    },
     // 禁用周视图
     disabledWeekView: {
       type: Boolean,
@@ -301,6 +306,9 @@ export default {
       if (day > 30 || (day > 28 && month === 1)) {
         day = this.daysOfMonth(year)[month]
       }
+      if (!this.scrollChangeDateRememberDate) {
+        day = 1
+      }
       tempDate = { day: day, year: year, month: month }
 
       if (this.formatDisabledDate(tempDate)) return
@@ -398,7 +406,7 @@ export default {
     },
     calendar_day_checked_fun(date, type, index) { // 该日期是否为选中的日期
       if (this.formatDisabledDate(date)) return false
-      if (this.isTouching) return false
+      if (!this.scrollChangeDate && this.isTouching) return false
 
       let ret = this.checkedDate.year === date.year && this.checkedDate.month === date.month && this.checkedDate.day === date.day
       if (ret) {
@@ -584,6 +592,9 @@ export default {
     },
     getLastWeek() { // 显示上一周
       let checkedDate = this.lastWeek[this.selectedDayIndex]
+      if (!this.scrollChangeDateRememberDate) {
+        checkedDate = this.lastWeek[0]
+      }
       this.showWeek(checkedDate)
 
       if (this.formatDisabledDate(checkedDate)) return
@@ -592,11 +603,13 @@ export default {
         this.currentChangeIsScroll = false
         return
       }
-
       this.checkedDate = checkedDate
     },
     getNextWeek() { // 显示下一周
       let checkedDate = this.nextWeek[this.selectedDayIndex]
+      if (!this.scrollChangeDateRememberDate) {
+        checkedDate = this.nextWeek[0]
+      }
       this.showWeek(checkedDate)
 
       if (this.formatDisabledDate(checkedDate)) return
@@ -605,7 +618,6 @@ export default {
         this.currentChangeIsScroll = false
         return
       }
-
       this.checkedDate = checkedDate
     },
     getLastMonth() { // 获取上个月日历
