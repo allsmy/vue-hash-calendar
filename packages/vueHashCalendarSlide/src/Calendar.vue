@@ -6,7 +6,7 @@
 */
 <template>
     <div class="calendar_body" v-show="show">
-        <div class="calendar_week" ref="weekTitle">
+        <div class="calendar_week" ref="weekTitle" :style="{color: `${calendarWeekColor}`}">
             <div class="calendar_item" v-for="item in calendarWeek" :key="item">
                 <p class="calendar_day">{{ item }}</p>
             </div>
@@ -22,13 +22,13 @@
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1"
                            class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ showMonthUnit ? language.MONTH && language.MONTH[date.month] : date.day }}</p>
-                        <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i)}"
-                           :class="{'calendar_day_today': isToday(date),'calendar_day_checked': isCheckedDay(date)}">
+                        <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i), 'border': todayBorder(date)}">
                             {{ date.day }}</p>
                         <div :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
                     </div>
                 </li>
             </ul>
+          <div @click.stop="" v-if="isShowWeek && !!maskLinearGradient" style="height: 40px;position: absolute;top: 40px;width: 100%;" :style="{'background-image': `${maskLinearGradient}`}"></div>
         </div>
     </div>
 </template>
@@ -115,6 +115,18 @@ export default {
     noSwipeUpDown: {
       type: Boolean,
       default: false
+    },
+    contentColor: {
+      type: String,
+      default: '#FFFFFF'
+    },
+    maskLinearGradient: {
+      type: String,
+      default: ''
+    },
+    calendarWeekColor: {
+      type: String,
+      default: '#FFFFFF'
     }
   },
   data() {
@@ -242,12 +254,6 @@ export default {
     }
   },
   computed: {
-    calendar_day_checked() {
-      return {
-        background: '#ffffff',
-        color: this.mainBackgroundColor
-      }
-    }
   },
   methods: {
     initDom() { // 初始化日历dom
@@ -278,6 +284,9 @@ export default {
           this.showWeek()
         }, this.transitionDuration * 1000)
       }
+    },
+    todayBorder(date) {
+      return this.isToday(date) ? '1px solid ' + this.circleBackgroundColor : ''
     },
     // 计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息
     calculateCalendarOfThreeMonth(year = new Date().getFullYear(), month = new Date().getMonth()) {
@@ -545,7 +554,11 @@ export default {
       this.calendarY = -(this.calendarItemHeight * lastLine)
 
       this.isShowWeek = true
-      this.calendarGroupHeight = this.calendarItemHeight
+      if (!!this.maskLinearGradient) {
+        this.calendarGroupHeight = this.calendarItemHeight * 2
+      } else {
+        this.calendarGroupHeight = this.calendarItemHeight
+      }
 
 
       let currentWeek = []

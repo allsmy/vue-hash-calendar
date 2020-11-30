@@ -8,7 +8,7 @@
     <div>
         <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
              :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
-            <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`, 'background-color': `${mainBackgroundColor}`}" @click.stop>
+            <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`, 'background-color': `${mainBackgroundColor}`, 'color': `${contentColor}`}" @click.stop>
                 <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="bindFields" @height="heightChange"
                           :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                           @change="dateChange" @click="dateClick"></calendar>
@@ -73,6 +73,10 @@ export default {
     disableColor: {
       type: String,
       default: '#c0c4cc'
+    },
+    contentColor: {
+      type: String,
+      default: '#FFFFFF'
     }
   },
   components: {
