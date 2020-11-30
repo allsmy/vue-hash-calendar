@@ -554,7 +554,7 @@ export default {
       this.calendarY = -(this.calendarItemHeight * lastLine)
 
       this.isShowWeek = true
-      if (!!this.maskLinearGradient) {
+      if (this.maskLinearGradient) {
         this.calendarGroupHeight = this.calendarItemHeight * 2
       } else {
         this.calendarGroupHeight = this.calendarItemHeight
