@@ -28,7 +28,11 @@
                     </div>
                 </li>
             </ul>
-          <div @click.stop="" v-if="isShowWeek && !!maskLinearGradient" style="height: 40px;position: absolute;top: 40px;width: 100%;" :style="{'background-image': `${maskLinearGradient}`}"></div>
+          <div v-if="!!maskLinearGradient" style="height: 40px;position: absolute;width: 100%;" :style="{'background-image': `${maskLinearGradient}`, top: `${maskLinearGradientTop}`}"></div>
+          <div @click="switchWeekMonthVal=!switchWeekMonthVal" v-if="!!maskLinearGradient" style="height: 40px;line-height:40px;text-align:center;position: absolute;width: 100%;" :style="{color: mainBackgroundColor, top: `${maskLinearGradientTop}`}">
+            <img v-if="!!maskLinearGradientButtonIcon" :src="maskLinearGradientButtonIcon" style="height: 100%;"/>
+            <span v-else>展开关闭</span>
+          </div>
         </div>
     </div>
 </template>
@@ -124,6 +128,10 @@ export default {
       type: String,
       default: ''
     },
+    maskLinearGradientButtonIcon: {
+      type: String,
+      default: ''
+    },
     calendarWeekColor: {
       type: String,
       default: '#FFFFFF'
@@ -168,7 +176,8 @@ export default {
       nextWeek: [], // 下一周的数据
       isLastWeekInCurrentMonth: false, // 上一周的数据是否在本月
       isNextWeekInCurrentMonth: false, // 下一周的数据是否在本月
-      markDateColorObj: []// 所有被标记的日期所对应的颜色
+      markDateColorObj: [], // 所有被标记的日期所对应的颜色
+      switchWeekMonthVal: this.isShowWeekView
     }
   },
   mounted() {
@@ -226,15 +235,13 @@ export default {
     },
     isShowWeekView: {
       handler(val) {
-        if (val) {
-          this.$nextTick(() => {
-            this.showWeek()
-          })
-        } else {
-          this.$nextTick(() => {
-            this.showMonth()
-          })
-        }
+        this.switchWeekMonth(val)
+      },
+      immediate: true
+    },
+    switchWeekMonthVal: {
+      handler(val) {
+        this.switchWeekMonth(val)
       },
       immediate: true
     },
@@ -244,18 +251,39 @@ export default {
     swipeStatus(val) {
       if (this.noSwipeUpDown) return
       // 处理上下就够了，组件外的滑动触发的滑动
+      let week = null
       if (val === 'down' && this.isShowWeek) {
         this.$emit('slidechange', 'down')
-        this.showMonth()
+        week = false
       } else if (val === 'up' && !this.isShowWeek) {
         this.$emit('slidechange', 'up')
-        this.showWeek()
+        week = true
+      }
+      if (week !== null) {
+        this.switchWeekMonth(week)
       }
     }
   },
   computed: {
+    maskLinearGradientTop(){
+      return this.calendarGroupHeight - 40 + 'px'
+    }
   },
   methods: {
+    switchWeekMonthFun(){
+
+    },
+    switchWeekMonth(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.showWeek()
+        })
+      } else {
+        this.$nextTick(() => {
+          this.showMonth()
+        })
+      }
+    },
     initDom() { // 初始化日历dom
       this.$nextTick(() => {
         this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + 10
