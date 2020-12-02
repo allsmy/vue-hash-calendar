@@ -21,6 +21,8 @@
                        :disabled-week-view="false"
                        :mainBackgroundColor="'rgb(140 110 110)'"
                        :disableColor="'#c0c4cc'"
+                       :borderBoxShadow="'0 5px 10px 0px rgba(203,203,203,0.5)'"
+                       :borderRadius="'5px'"
                        :contentColor="'rgb(239,190,6)'"
                        :circleBackgroundColor="'rgb(26,2,2)'"
                        :calendarWeekColor="'rgb(26,26,24)'"
