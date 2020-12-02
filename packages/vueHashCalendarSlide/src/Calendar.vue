@@ -265,12 +265,12 @@ export default {
     }
   },
   computed: {
-    maskLinearGradientTop(){
+    maskLinearGradientTop() {
       return this.calendarGroupHeight - 40 + 'px'
     }
   },
   methods: {
-    switchWeekMonthFun(){
+    switchWeekMonthFun() {
 
     },
     switchWeekMonth(val) {
