@@ -723,7 +723,6 @@ export default {
         top 0
         flexAlign()
         color main-font-color
-        z-index 2
     }
 
     .calendar_group {
