@@ -20,16 +20,18 @@
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
                          :class="{'calendar_item_disable': formatDisabledDate(date)}" :style="{color: formatDisabledDate(date) ? disableColor : ''}"
                          @click="clickCalendarDay(date)">
-                        <p v-if="date.day === 1"
-                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ showMonthUnit ? language.MONTH && language.MONTH[date.month] : date.day }}</p>
-                        <p v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i), 'border': todayBorder(date)}">
-                            {{ date.day }}</p>
-                        <div :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
+                        <div v-if="date.day === 1"
+                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ showMonthUnit ? language.MONTH && language.MONTH[date.month] : date.day }}</div>
+                        <div v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i), 'border': todayBorder(date)}">
+                          <div>{{ date.day }}</div>
+                          <div v-if="!!markDateDotColor(date, 'bool')" :style="{'background': markDateDotColor(date), 'top': bottomTextFlag ? '45px' : '35px'}" class="calendar_dot"></div>
+                          <div v-else-if="!!markDateBottomText(date, 'bool')" class="calendar_bottom_text" :style="{color: markDateBottomText(date)['color']}">{{ markDateBottomText(date)['text'] }}</div>
+                        </div>
                     </div>
                 </li>
             </ul>
-          <div v-if="!!maskLinearGradient" style="height: 40px;position: absolute;width: 100%;" :style="{'background-image': `${maskLinearGradient}`, top: `${maskLinearGradientTop}`}"></div>
-          <div @click="switchWeekMonthVal=!switchWeekMonthVal" v-if="!!maskLinearGradient" style="height: 40px;line-height:40px;text-align:center;position: absolute;width: 100%;" :style="{color: mainBackgroundColor, top: `${maskLinearGradientTop}`}">
+          <div v-if="!!maskLinearGradient" style="height: 40px;position: absolute;width: 100%;" :style="{'background-image': `${maskLinearGradient}`, top: `${maskLinearGradientTop}`, height: bottomTextFlag ? '60px' : '40px'}"></div>
+          <div @click="switchWeekMonthVal=!switchWeekMonthVal" v-if="!!maskLinearGradient" style="height: 40px;line-height:40px;text-align:center;position: absolute;width: 100%;" :style="{color: mainBackgroundColor, top: `${maskLinearGradientTop}`, height: bottomTextFlag ? '60px' : '40px', 'line-height': bottomTextFlag ? '60px' : '40px'}">
             <img v-if="!!maskLinearGradientButtonIcon" :src="maskLinearGradientButtonIcon" style="height: 100%;"/>
             <span v-else>展开关闭</span>
           </div>
@@ -177,7 +179,8 @@ export default {
       isLastWeekInCurrentMonth: false, // 上一周的数据是否在本月
       isNextWeekInCurrentMonth: false, // 下一周的数据是否在本月
       markDateColorObj: [], // 所有被标记的日期所对应的颜色
-      switchWeekMonthVal: this.isShowWeekView
+      switchWeekMonthVal: this.isShowWeekView,
+      bottomTextFlag: false
     }
   },
   mounted() {
@@ -196,7 +199,7 @@ export default {
         this.markDateColorObj = []
         val.forEach(item => {
           item.date.forEach(date => {
-            this.$set(this.markDateColorObj, date, {color: item.color, type: item.type})
+            this.$set(this.markDateColorObj, date, {color: typeof item.color === 'string' ? item.color : '', type: item.type, text: typeof item.text === 'string' ? item.text : ''})
           })
         })
       },
@@ -266,13 +269,12 @@ export default {
   },
   computed: {
     maskLinearGradientTop() {
-      return this.calendarGroupHeight - 40 + 'px'
+      let h = 40;
+      if (this.bottomTextFlag) h = 60
+      return this.calendarGroupHeight - h + 'px'
     }
   },
   methods: {
-    switchWeekMonthFun() {
-
-    },
     switchWeekMonth(val) {
       if (val) {
         this.$nextTick(() => {
@@ -286,7 +288,15 @@ export default {
     },
     initDom() { // 初始化日历dom
       this.$nextTick(() => {
-        this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + 10
+        let h = 10
+        if (this.markDate.length > 0) {
+          let l = this.markDate.findIndex(item => item.type === 'bottomText')
+          if (l > -1) {
+            h = 30
+            this.bottomTextFlag = true
+          }
+        }
+        this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + h
         this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight
 
         let calendarItemGroup = this.$refs.calendarItem
@@ -679,15 +689,37 @@ export default {
       }
       this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow)
     },
-    markDateDotColor(date) { // 当前日期是否需要标记
+    markDateDotColor(date, type) { // 当前日期是否需要标记
       let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
       const currentDateObj = this.markDateColorObj[dateString]
       try {
-        if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'dot') return currentDateObj.color
+        if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'dot') {
+          if (typeof type !== 'undefined' && type === 'bool') {
+            return true
+          } else {
+            return currentDateObj.color
+          }
+        }
       } catch (e) {
         // e
       }
-      return ''
+      return false
+    },
+    markDateBottomText(date, type) { // 当前日期是否需要标记
+      let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
+      const currentDateObj = this.markDateColorObj[dateString]
+      try {
+        if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'bottomText') {
+          if (typeof type !== 'undefined' && type === 'bool') {
+            return true
+          } else {
+            return currentDateObj
+          }
+        }
+      } catch (e) {
+        // e
+      }
+      return false
     },
     formatDisabledDate(date) {
       let fDate = new Date(`${date.year}/${date.month + 1}/${date.day}`)
@@ -758,6 +790,7 @@ export default {
         flexContent()
         flex-direction column
         position relative
+        overflow hidden
     }
 
     .calendar_item_disable {
@@ -796,6 +829,17 @@ export default {
         height 5px
         border-radius 50%
         position absolute
-        top: 25px
+        top: 35px
+    }
+
+    .calendar_bottom_text {
+      color rgba(51,51,51,1)
+      font-size 9px!important
+      height 15px
+      position absolute
+      top 45px
+      overflow hidden
+      text-overflow ellipsis
+      text-align center
     }
 </style>
