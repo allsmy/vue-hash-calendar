@@ -26,6 +26,9 @@
                           <div>{{ date.day }}</div>
                           <div v-if="!!markDateDotColor(date, 'bool')" :style="{'background': markDateDotColor(date), 'top': bottomTextFlag ? '45px' : '35px'}" class="calendar_dot"></div>
                           <div v-else-if="!!markDateBottomText(date, 'bool')" class="calendar_bottom_text" :style="{color: markDateBottomText(date)['color']}">{{ markDateBottomText(date)['text'] }}</div>
+                          <div v-else-if="!!markDateTopRightIcon(date, 'bool')" style="background: red;width: 14px;text-align: center;border-radius: 48%;height: 14px;line-height: 11px;position: absolute;top: 11px;right: 5px;" :style="{top: bottomTextFlag ? '11px' : '0px'}">
+                            <span style="color: white;height: 7px;font-size: 9px;">!</span>
+                          </div>
                         </div>
                     </div>
                 </li>
@@ -473,6 +476,7 @@ export default {
       if (typeof index !== 'undefined' && this.isNotCurrentMonthDay(date, index)) {
         return this.disableColor
       }
+      if (this.markDateDateColor(date, 'bool') && type === 'color') return this.markDateDateColor(date)
       return ''
     },
     dateFontsize(month) {
@@ -714,6 +718,38 @@ export default {
             return true
           } else {
             return currentDateObj
+          }
+        }
+      } catch (e) {
+        // e
+      }
+      return false
+    },
+    markDateTopRightIcon(date, type) { // 当前日期是否需要标记
+      let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
+      const currentDateObj = this.markDateColorObj[dateString]
+      try {
+        if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'topRightIcon') {
+          if (typeof type !== 'undefined' && type === 'bool') {
+            return true
+          } else {
+            return currentDateObj
+          }
+        }
+      } catch (e) {
+        // e
+      }
+      return false
+    },
+    markDateDateColor(date, type) { // 当前日期是否需要标记
+      let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
+      const currentDateObj = this.markDateColorObj[dateString]
+      try {
+        if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'dateColor') {
+          if (typeof type !== 'undefined' && type === 'bool') {
+            return true
+          } else {
+            return currentDateObj.color
           }
         }
       } catch (e) {
