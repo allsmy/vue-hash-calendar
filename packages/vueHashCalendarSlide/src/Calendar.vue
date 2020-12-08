@@ -140,6 +140,10 @@ export default {
     calendarWeekColor: {
       type: String,
       default: '#FFFFFF'
+    },
+    bottomTextFlag: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -182,8 +186,7 @@ export default {
       isLastWeekInCurrentMonth: false, // 上一周的数据是否在本月
       isNextWeekInCurrentMonth: false, // 下一周的数据是否在本月
       markDateColorObj: [], // 所有被标记的日期所对应的颜色
-      switchWeekMonthVal: this.isShowWeekView,
-      bottomTextFlag: false
+      switchWeekMonthVal: this.isShowWeekView
     }
   },
   mounted() {
@@ -202,7 +205,11 @@ export default {
         this.markDateColorObj = []
         val.forEach(item => {
           item.date.forEach(date => {
-            this.$set(this.markDateColorObj, date, {color: typeof item.color === 'string' ? item.color : '', type: item.type, text: typeof item.text === 'string' ? item.text : ''})
+            let prefix = ''
+            if (item.type === 'bottomText') {
+              prefix = 'bottomText'
+            }
+            this.$set(this.markDateColorObj, date + prefix, {color: typeof item.color === 'string' ? item.color : '', type: item.type, text: typeof item.text === 'string' ? item.text : ''})
           })
         })
       },
@@ -272,7 +279,7 @@ export default {
   },
   computed: {
     maskLinearGradientTop() {
-      let h = 40;
+      let h = 40
       if (this.bottomTextFlag) h = 60
       return this.calendarGroupHeight - h + 'px'
     }
@@ -292,12 +299,8 @@ export default {
     initDom() { // 初始化日历dom
       this.$nextTick(() => {
         let h = 10
-        if (this.markDate.length > 0) {
-          let l = this.markDate.findIndex(item => item.type === 'bottomText')
-          if (l > -1) {
-            h = 30
-            this.bottomTextFlag = true
-          }
+        if (this.bottomTextFlag) {
+          h = 30
         }
         this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + h
         this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight
@@ -700,9 +703,8 @@ export default {
         if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'dot') {
           if (typeof type !== 'undefined' && type === 'bool') {
             return true
-          } else {
-            return currentDateObj.color
           }
+          return currentDateObj.dotColor
         }
       } catch (e) {
         // e
@@ -711,14 +713,14 @@ export default {
     },
     markDateBottomText(date, type) { // 当前日期是否需要标记
       let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
-      const currentDateObj = this.markDateColorObj[dateString]
+      let index = dateString + 'bottomText'
+      const currentDateObj = this.markDateColorObj[index]
       try {
         if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'bottomText') {
           if (typeof type !== 'undefined' && type === 'bool') {
             return true
-          } else {
-            return currentDateObj
           }
+          return currentDateObj
         }
       } catch (e) {
         // e
@@ -732,9 +734,8 @@ export default {
         if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'topRightIcon') {
           if (typeof type !== 'undefined' && type === 'bool') {
             return true
-          } else {
-            return currentDateObj
           }
+          return currentDateObj
         }
       } catch (e) {
         // e
@@ -748,9 +749,8 @@ export default {
         if (typeof currentDateObj !== 'undefined' && currentDateObj.type === 'dateColor') {
           if (typeof type !== 'undefined' && type === 'bool') {
             return true
-          } else {
-            return currentDateObj.color
           }
+          return currentDateObj.color
         }
       } catch (e) {
         // e
