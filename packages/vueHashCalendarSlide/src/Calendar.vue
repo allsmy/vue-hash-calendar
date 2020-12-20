@@ -359,7 +359,7 @@ export default {
       if (day > 30 || (day > 28 && month === 1)) {
         day = this.daysOfMonth(year)[month]
       }
-      if (!this.scrollChangeDateRememberDate) {
+      if (!this.scrollChangeDateRememberDate && (this.swipeStatus || this.isTouching)) {
         day = 1
       }
       tempDate = { day: day, year: year, month: month }
@@ -650,7 +650,7 @@ export default {
     },
     getLastWeek() { // 显示上一周
       let checkedDate = this.lastWeek[this.selectedDayIndex]
-      if (!this.scrollChangeDateRememberDate) {
+      if (!this.scrollChangeDateRememberDate && (this.swipeStatus || this.isTouching)) {
         checkedDate = this.lastWeek[0]
       }
       this.showWeek(checkedDate)
@@ -665,7 +665,7 @@ export default {
     },
     getNextWeek() { // 显示下一周
       let checkedDate = this.nextWeek[this.selectedDayIndex]
-      if (!this.scrollChangeDateRememberDate) {
+      if (!this.scrollChangeDateRememberDate && (this.swipeStatus || this.isTouching)) {
         checkedDate = this.nextWeek[0]
       }
       this.showWeek(checkedDate)
