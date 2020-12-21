@@ -7,7 +7,7 @@
 <template>
   <div class="body">
     <vue-hash-calendar-slide ref="picker"
-                       model="dialog"
+                       model="inline"
                        :scroll-change-date="true"
                        :visible.sync="isShowCalendar"
                        :default-datetime="defaultDatetime"
@@ -28,7 +28,7 @@
                        :circleBackgroundColor="'#0F8EE9'"
                        :calendarWeekColor="'#999999'"
                        :scroll-change-date-remember-date="false"
-                       :showArrowIcon="false"
+                       :showArrowIcon="true"
                        format="YY/MM/DD hh:mm"
                        lang="CN"
                        @confirm="dateConfirm"

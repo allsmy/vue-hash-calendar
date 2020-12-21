@@ -13,14 +13,6 @@
                           :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                           @change="dateChange" @click="dateClick"></calendar>
             </div>
-          <div v-if="showArrowIcon" class="arrowBlock" :style="{top: calendarContentHeight-1+'px'}">
-            <div class="block1">
-              <div @click="arrowClick" class="block2"></div>
-              <div @click="arrowClick" class="block3">
-                <img src="../img/jiantou.png" style="height: 30px" :style="arrowIconStyle">
-              </div>
-            </div>
-          </div>
         </div>
     </div>
 
@@ -117,9 +109,7 @@ export default {
       isShowCalendar: false, // 是否显示日历选择控件
       calendarContentHeight: 0, // 日历组件高度
       calendarTitleHeight: 0, // 日历组件标题高度
-      firstTimes: true,// 第一次触发
-      arrowIconStyle: {transform: 'rotate(90deg)'},
-      arrowIconEvent: this.$attrs.isShowWeekView ? 'down': 'up'
+      firstTimes: true, // 第一次触发
     }
   },
   mounted() {
@@ -158,15 +148,6 @@ export default {
         this.isShowCalendar = val
       },
       immediate: true
-    },
-    calendarContentHeight: function (n, o) {
-      if ( n > o) {
-        this.arrowIconEvent = 'up'
-        this.arrowIconStyle = {transform: 'rotate(-90deg)'}
-      } else {
-        this.arrowIconEvent = 'down'
-        this.arrowIconStyle = {transform: 'rotate(90deg)'}
-      }
     }
   },
   computed: {
@@ -184,9 +165,6 @@ export default {
     }
   },
   methods: {
-    arrowClick(){
-      this.$refs.calendar.swipeStatusFun(this.arrowIconEvent)
-    },
     today() {
       if (this.disabledDate(new Date())) return
 
@@ -293,7 +271,7 @@ export default {
         /*background main-color*/
         color #ffffff
         height px2vw(710px)
-        overflow hidden
+        //overflow hidden
     }
 
     .calendar_title {
@@ -327,18 +305,5 @@ export default {
     .calendar_confirm {
         color main-color
         margin-right px2vw(34px)
-    }
-
-    .arrowBlock {
-      position: relative; top: 394px; height: 25px; width: 100%;
-      .block1 {
-        overflow: hidden; height: 70px; width: 70px; margin: 0px auto; position: relative;
-        .block2 {
-          width: 70px; line-height: 70px; height: 70px; border-radius: 50%; position: relative; top: -45px; background: white; box-shadow: rgba(203, 203, 203, 0.5) 0px 5px 5px 0px;
-        }
-        .block3 {
-          position: absolute;bottom: 42px;left: 20px;color: black;
-        }
-      }
     }
 </style>

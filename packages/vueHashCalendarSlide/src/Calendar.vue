@@ -34,6 +34,16 @@
                 </li>
             </ul>
         </div>
+
+      <div v-if="showArrowIcon" class="arrowBlock" :style="{top: calendarGroupHeight+calendarWeekTitleHeight+'px'}">
+        <div class="line"></div>
+        <div class="block1">
+          <div class="block2"></div>
+          <div @click="arrowClick" class="block3">
+            <img src="../img/jiantou.png" class="block4" :style="arrowIconStyle">
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -131,7 +141,15 @@ export default {
     bottomTextFlag: {
       type: Boolean,
       default: false
-    }
+    },
+    showArrowIcon: {
+      type: Boolean,
+      default: false
+    },
+    borderBoxShadow: {
+      type: String,
+      default: ''
+    },
   },
   data() {
     return {
@@ -173,7 +191,9 @@ export default {
       isLastWeekInCurrentMonth: false, // 上一周的数据是否在本月
       isNextWeekInCurrentMonth: false, // 下一周的数据是否在本月
       markDateColorObj: [], // 所有被标记的日期所对应的颜色
-      switchWeekMonthVal: this.isShowWeekView
+      switchWeekMonthVal: this.isShowWeekView,
+      arrowIconEvent: '',
+      arrowIconStyle: {transform: 'rotate(90deg)'}
     }
   },
   mounted() {
@@ -245,8 +265,12 @@ export default {
       },
       immediate: true
     },
-    calendarGroupHeight(val) {
-      this.$emit('height', val + this.calendarWeekTitleHeight)
+    calendarGroupHeight: function(n, o) {
+      let arrowHeight = 0
+      if (this.showArrowIcon) {
+        arrowHeight = 6
+      }
+      this.$emit('height', n + this.calendarWeekTitleHeight + arrowHeight)
     },
     swipeStatus(val) {
       if (this.noSwipeUpDown) return
@@ -256,6 +280,9 @@ export default {
   },
   computed: {},
   methods: {
+    arrowClick() {
+      this.swipeStatusFun(this.arrowIconEvent)
+    },
     swipeStatusFun(val) {
       // 处理上下就够了，组件外的滑动触发的滑动
       let week = null
@@ -272,10 +299,14 @@ export default {
     },
     switchWeekMonth(val) {
       if (val) {
+        this.arrowIconStyle = {transform: 'rotate(90deg)'}
+        this.arrowIconEvent = 'down'
         this.$nextTick(() => {
           this.showWeek()
         })
       } else {
+        this.arrowIconEvent = 'up'
+        this.arrowIconStyle = {transform: 'rotate(-90deg)'}
         this.$nextTick(() => {
           this.showMonth()
         })
@@ -858,5 +889,24 @@ export default {
       overflow hidden
       text-overflow ellipsis
       text-align center
+    }
+
+    .arrowBlock {
+      position: relative; top: 394px; height: 45px; width: 100%;
+      overflow: hidden;
+      background: white;
+      .line {
+        width: 100%;height: 10px;box-shadow: rgba(203, 203, 203, 0.5) 0px 5px 10px 1px;border-radius: 5px;
+      }
+      .block1 {
+        overflow: hidden; height: 70px; width: 70px; margin: 0px auto; position: relative;
+        .block2 {
+          width: 70px; line-height: 70px; height: 70px; border-radius: 50%; position: relative; top: -45px; background: white; box-shadow: rgba(203, 203, 203, 0.5) 0px 5px 5px 0px;
+        }
+        .block3 {
+          position: absolute;bottom: 42px;left: 20px;color: black;
+        }
+        .block4 {height: 30px}
+      }
     }
 </style>
