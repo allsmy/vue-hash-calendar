@@ -28,6 +28,7 @@
                        :circleBackgroundColor="'#0F8EE9'"
                        :calendarWeekColor="'#999999'"
                        :scroll-change-date-remember-date="false"
+                       :showArrowIcon="false"
                        format="YY/MM/DD hh:mm"
                        lang="CN"
                        @confirm="dateConfirm"

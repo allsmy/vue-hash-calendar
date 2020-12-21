@@ -251,6 +251,13 @@ export default {
     swipeStatus(val) {
       if (this.noSwipeUpDown) return
       // 处理上下就够了，组件外的滑动触发的滑动
+      this.swipeStatusFun(val)
+    }
+  },
+  computed: {},
+  methods: {
+    swipeStatusFun(val) {
+      // 处理上下就够了，组件外的滑动触发的滑动
       let week = null
       if (val === 'down' && this.isShowWeek) {
         this.$emit('slidechange', 'down')
@@ -262,10 +269,7 @@ export default {
       if (week !== null) {
         this.switchWeekMonth(week)
       }
-    }
-  },
-  computed: {},
-  methods: {
+    },
     switchWeekMonth(val) {
       if (val) {
         this.$nextTick(() => {
