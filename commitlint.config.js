@@ -18,7 +18,7 @@ module.exports = {
           git commit -m 'feat: 增加 xxx 功能'
         */
     'type-enum': [2, 'always', [
-      'upd', 'feat', 'fix', 'refactor', 'docs', 'chore', 'style', 'revert'
+      'upd', 'feat', 'fix', 'refactor', 'docs', 'chore', 'style', 'revert', 'del'
     ]],
     'type-case': [0],
     'type-empty': [0],

@@ -33,11 +33,6 @@
                     </div>
                 </li>
             </ul>
-          <div v-if="!!maskLinearGradient" style="height: 40px;position: absolute;width: 100%;" :style="{'background-image': `${maskLinearGradient}`, top: `${maskLinearGradientTop}`, height: bottomTextFlag ? '60px' : '40px'}"></div>
-          <div @click="switchWeekMonthVal=!switchWeekMonthVal" v-if="!!maskLinearGradient" style="height: 40px;line-height:40px;text-align:center;position: absolute;width: 100%;" :style="{color: mainBackgroundColor, top: `${maskLinearGradientTop}`, height: bottomTextFlag ? '60px' : '40px', 'line-height': bottomTextFlag ? '60px' : '40px'}">
-            <img v-if="!!maskLinearGradientButtonIcon" :src="maskLinearGradientButtonIcon" style="height: 100%;"/>
-            <span v-else>展开关闭</span>
-          </div>
         </div>
     </div>
 </template>
@@ -128,14 +123,6 @@ export default {
     contentColor: {
       type: String,
       default: '#FFFFFF'
-    },
-    maskLinearGradient: {
-      type: String,
-      default: ''
-    },
-    maskLinearGradientButtonIcon: {
-      type: String,
-      default: ''
     },
     calendarWeekColor: {
       type: String,
@@ -277,13 +264,7 @@ export default {
       }
     }
   },
-  computed: {
-    maskLinearGradientTop() {
-      let h = 40
-      if (this.bottomTextFlag) h = 60
-      return this.calendarGroupHeight - h + 'px'
-    }
-  },
+  computed: {},
   methods: {
     switchWeekMonth(val) {
       if (val) {
@@ -599,11 +580,7 @@ export default {
       this.calendarY = -(this.calendarItemHeight * lastLine)
 
       this.isShowWeek = true
-      if (this.maskLinearGradient) {
-        this.calendarGroupHeight = this.calendarItemHeight * 2
-      } else {
-        this.calendarGroupHeight = this.calendarItemHeight
-      }
+      this.calendarGroupHeight = this.calendarItemHeight
 
 
       let currentWeek = []
