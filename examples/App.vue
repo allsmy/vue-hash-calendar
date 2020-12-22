@@ -13,7 +13,7 @@
                        :default-datetime="defaultDatetime"
                        :is-show-week-view="false"
                        :minute-step="1"
-                       :bottomTextFlag="true"
+                       :bottomTextFlag="false"
                        :mark-date="markDate"
                        :disabled-date="disabledDate"
                        week-start="sunday"

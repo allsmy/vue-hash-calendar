@@ -109,7 +109,7 @@ export default {
       isShowCalendar: false, // 是否显示日历选择控件
       calendarContentHeight: 0, // 日历组件高度
       calendarTitleHeight: 0, // 日历组件标题高度
-      firstTimes: true, // 第一次触发
+      firstTimes: true // 第一次触发
     }
   },
   mounted() {

@@ -24,9 +24,9 @@
                            class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ showMonthUnit ? language.MONTH && language.MONTH[date.month] : date.day }}</div>
                         <div v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i), 'border': todayBorder(date)}">
                           <div>{{ date.day }}</div>
-                          <div v-if="!!markDateDotColor(date, 'bool')" :style="{'background': markDateDotColor(date), 'top': bottomTextFlag ? '45px' : '35px'}" class="calendar_dot"></div>
-                          <div v-else-if="!!markDateBottomText(date, 'bool')" class="calendar_bottom_text" :style="{color: markDateBottomText(date)['color']}">{{ markDateBottomText(date)['text'] }}</div>
-                          <div v-else-if="!!markDateTopRightIcon(date, 'bool')" style="background: red;width: 14px;text-align: center;border-radius: 48%;height: 14px;line-height: 12px;position: absolute;top: 11px;right: 5px;" :style="{top: bottomTextFlag ? '11px' : '0px'}">
+                          <div v-if="!!markDateDotColor(date, 'bool')" :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
+                          <div v-else-if="!!markDateBottomText(date, 'bool') && !isCheckedDay(date)" class="calendar_bottom_text" :style="{color: markDateBottomText(date)['color']}">{{ markDateBottomText(date)['text'] }}</div>
+                          <div v-else-if="!!markDateTopRightIcon(date, 'bool')" style="background: red;width: 14px;text-align: center;border-radius: 48%;height: 14px;line-height: 12px;position: absolute;top: 0px;right: 5px;">
                             <span style="color: white;height: 7px;font-size: 9px;">!</span>
                           </div>
                         </div>
@@ -138,10 +138,6 @@ export default {
       type: String,
       default: '#FFFFFF'
     },
-    bottomTextFlag: {
-      type: Boolean,
-      default: false
-    },
     showArrowIcon: {
       type: Boolean,
       default: false
@@ -149,7 +145,7 @@ export default {
     borderBoxShadow: {
       type: String,
       default: ''
-    },
+    }
   },
   data() {
     return {
@@ -315,9 +311,6 @@ export default {
     initDom() { // 初始化日历dom
       this.$nextTick(() => {
         let h = 10
-        if (this.bottomTextFlag) {
-          h = 30
-        }
         this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + h
         this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight
 
@@ -877,7 +870,7 @@ export default {
         height 5px
         border-radius 50%
         position absolute
-        top: 35px
+        top: 28px
     }
 
     .calendar_bottom_text {
@@ -885,7 +878,7 @@ export default {
       font-size 9px!important
       height 15px
       position absolute
-      top 45px
+      top 25px
       overflow hidden
       text-overflow ellipsis
       text-align center
