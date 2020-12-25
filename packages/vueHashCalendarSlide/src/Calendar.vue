@@ -40,7 +40,7 @@
         <div class="block1">
           <div class="block2"></div>
           <div @click="arrowClick" class="block3">
-            <img src="../img/jiantou.png" class="block4" :style="arrowIconStyle">
+            <img :src="arrowImg" class="block4" :style="arrowIconStyle">
           </div>
         </div>
       </div>
@@ -145,6 +145,10 @@ export default {
     borderBoxShadow: {
       type: String,
       default: ''
+    },
+    arrowImg: {
+      type: String,
+      default: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADUAAAA1CAYAAADh5qNwAAADEUlEQVRoQ+3YTWjUQBQH8Pd2LWvxICgoCH6CIBUUFBQ9CIp46MFDuwFFWNnSJtku9Cb22JsePLeZSQ6e/GoLiiKiiEUUEUVFDwqCoCgVFEVBcTHJk4Gp1LGXhTdZUrLnMHm/+b+ZnQnCIvzhIjRBgcpLqkVSRVIdnIGi/To4+W29ukiqrenq4MOsSUVRtD5N0z2u617ooInvRCGEOA4AZzXmEQDUPM971QkcW1JCiGkA6JuHeE5EVd/3X2cN40SNAsApA/AkSRJneHj4TZYwNpSUcisRTQHAFgOgWrHqed67rGBsKFVwEATbEXESADYbgAdpmjqNRuNDFjBWlCp4fHx8Z7lcVrCNBuBeHMdOs9n8aBvGjlIFCyF2E9EkIq6dD0DEGSJyPM/7bBNmBaUKllLuBYBJIlpjAG7rzeOrLZg1lF5j+/QaW2UAbrZaLWdkZOS7DZhVlCo4DMMDaZqqNbbCaMXruhV/csOso/QaOwQAlwBguQG4qhNrccIyQelW7EVEBVtmAC7Pzs46Y2NjMRcsM5TePA4TkYJVjFaccl3XySVKJ9aHiBcBYIkBO+G67hkOWKZJzRUshFCpqMT+/ohoxvf9/blEBUGwYFJE1PB9P8gdSkqp1pRqvaVG8dNqTSEi5QoVhmFvmqb/7X5EdAUR1dHpNwdIjZHJmhJCLPg/RUTXKpWKU6/Xf3GBMkHpE4VKaKVR+I3u7u5qrVb7wQmyjgqCQJ39FGi1sX3f0kekb9wgqyh1SlfXDwAwT+l3yuVydXBw8IsNkDVUFEW7kiRRoHVG4Xe7urqqAwMDn2yBrKCEEDvUPQoANhktd1+B6vV6vm6+YRhuS5JkChHNbxQPS6VSdWho6L3NhObGZtvSgyDo0RfCHqPwx3oNvc0CxNp+UsrTRHTSKPxZkiT9ef7ud46Ijs5DvSCi/lx/oZVSHiGi8xr1NI7jY81m82VWLffPpsT50omJiQ2lUumg53kR57jtjsW2UbT7YpvPFyibs8s5dpEU52zaHKtIyubsco5dJMU5mzbHKpKyObucY/8BjBgVRWVxRp8AAAAASUVORK5CYII='
     }
   },
   data() {
