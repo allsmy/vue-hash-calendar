@@ -39,8 +39,7 @@
         <div class="line"></div>
         <div class="block1">
           <div class="block2"></div>
-          <div @click="arrowClick" class="block3">
-            <img src="../img/jiantou.png" class="block4" :style="arrowIconStyle">
+          <div @click="arrowClick" class="block3" :style="arrowIconStyle">
           </div>
         </div>
       </div>
@@ -897,9 +896,15 @@ export default {
           width: 70px; line-height: 70px; height: 70px; border-radius: 50%; position: relative; top: -45px; background: white; box-shadow: rgba(203, 203, 203, 0.5) 0px 5px 5px 0px;
         }
         .block3 {
-          position: absolute;bottom: 42px;left: 20px;color: black;
+          position: absolute;
+          bottom: 43px;
+          left: 26px;
+          color: #000;
+          height: 30px;
+          width: 18px;
+          background: url('../img/jiantou.png') center no-repeat;
+          background-size: 30px 30px;
         }
-        .block4 {height: 30px}
       }
     }
 </style>
