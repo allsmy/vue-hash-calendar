@@ -372,9 +372,6 @@ export default {
       if (day > 30 || (day > 28 && month === 1)) {
         day = this.daysOfMonth(year)[month]
       }
-      if (!this.scrollChangeDateRememberDate && (this.swipeStatus || this.isTouching)) {
-        day = 1
-      }
       tempDate = { day: day, year: year, month: month }
 
       if (this.formatDisabledDate(tempDate)) return
