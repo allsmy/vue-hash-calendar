@@ -7,7 +7,7 @@
 <template>
     <div>
         <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
-             :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
+             :style="{'height': `${model === 'inline' ? calendarContentHeightOut : undefined}px`}" @click="close">
             <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`, 'background-color': `${mainBackgroundColor}`, 'color': `${contentColor}`, 'box-shadow':`${borderBoxShadow}`, 'border-radius':`${borderRadius}`}" @click.stop>
                 <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="bindFields" @height="heightChange"
                           :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
@@ -108,6 +108,7 @@ export default {
       }, // 被选中的日期
       isShowCalendar: false, // 是否显示日历选择控件
       calendarContentHeight: 0, // 日历组件高度
+      calendarContentHeightOut: 0, // 日历组件高度
       calendarTitleHeight: 0, // 日历组件标题高度
       firstTimes: true // 第一次触发
     }
@@ -221,9 +222,16 @@ export default {
       this.isShowCalendar = false
     },
     heightChange(height) { // 高度变化
+      const self = this
       if (!this.firstTimes && this.model === 'dialog') return
-
       this.calendarContentHeight = height
+      this.calendarContentHeightOut = height
+      if (this.showArrowIcon) {
+        // 过程体验优化
+        setTimeout(function() {
+          self.calendarContentHeightOut += 40
+        },200)
+      }
       this.$emit('height', height)
     },
     touchStart(event) { // 监听手指开始滑动事件
