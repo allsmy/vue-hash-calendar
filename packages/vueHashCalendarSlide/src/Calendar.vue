@@ -26,7 +26,7 @@
                           <div>{{ date.day }}</div>
                           <div v-if="!!markDateDotColor(date, 'bool')" :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
                           <div v-else-if="!!markDateBottomText(date, 'bool') && !isCheckedDay(date)" class="calendar_bottom_text" :style="{color: markDateBottomText(date)['color']}">{{ markDateBottomText(date)['text'] }}</div>
-                          <div v-else-if="!!markDateTopRightIcon(date, 'bool')" style="background: red;width: 14px;text-align: center;border-radius: 48%;height: 14px;line-height: 12px;position: absolute;top: 0px;right: 5px;">
+                          <div v-else-if="!!markDateTopRightIcon(date, 'bool')" style="background: red;width: 14px;padding-left: 5.4px;border-radius: 48%;height: 14px;line-height: 12px;position: absolute;top: 0px;right: 5px;">
                             <span style="color: white;height: 7px;font-size: 9px;">!</span>
                           </div>
                         </div>
