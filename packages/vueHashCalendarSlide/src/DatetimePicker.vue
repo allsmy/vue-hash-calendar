@@ -230,7 +230,7 @@ export default {
         // 过程体验优化
         setTimeout(function() {
           self.calendarContentHeightOut += 40
-        }, 1000)
+        }, 100)
       }
       this.$emit('height', height)
     },
