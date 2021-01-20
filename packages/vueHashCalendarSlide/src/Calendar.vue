@@ -21,7 +21,14 @@
                          :class="{'calendar_item_disable': formatDisabledDate(date)}" :style="{color: formatDisabledDate(date) ? disableColor : ''}"
                          @click="clickCalendarDay(date)">
                         <div v-if="date.day === 1"
-                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">{{ showMonthUnit ? language.MONTH && language.MONTH[date.month] : date.day }}</div>
+                           class="calendar_day calendar_first_today" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'), 'color': calendar_day_checked_fun(date,'color', i), 'font-size': dateFontsize(date.month)}">
+                          <div>{{ showMonthUnit ? language.MONTH && language.MONTH[date.month] : date.day }}</div>
+                          <div v-if="!!markDateDotColor(date, 'bool')" :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
+                          <div v-else-if="!!markDateBottomText(date, 'bool') && !isCheckedDay(date)" class="calendar_bottom_text" :style="{color: markDateBottomText(date)['color']}">{{ markDateBottomText(date)['text'] }}</div>
+                          <div v-else-if="!!markDateTopRightIcon(date, 'bool')" style="background: red;width: 14px;padding-left: 5.4px;border-radius: 48%;height: 14px;line-height: 12px;position: absolute;top: 0px;right: 5px;">
+                            <span style="color: white;height: 7px;font-size: 9px;">!</span>
+                          </div>
+                        </div>
                         <div v-else class="calendar_day" ref="calendarDay" :style="{'background': calendar_day_checked_fun(date,'background'),'color': calendar_day_checked_fun(date,'color', i), 'border': todayBorder(date)}">
                           <div>{{ date.day }}</div>
                           <div v-if="!!markDateDotColor(date, 'bool')" :style="{'background': markDateDotColor(date)}" class="calendar_dot"></div>
@@ -710,7 +717,7 @@ export default {
           if (typeof type !== 'undefined' && type === 'bool') {
             return true
           }
-          return currentDateObj.dotColor
+          return currentDateObj.color
         }
       } catch (e) {
         // e
@@ -871,7 +878,8 @@ export default {
         height 5px
         border-radius 50%
         position absolute
-        top: 28px
+        top: 27px
+        color: #ff0000
     }
 
     .calendar_bottom_text {
