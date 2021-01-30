@@ -1,7 +1,16 @@
 ![calendar.gif](https://www.allsmy.com/resource/vue-hash-calendar-slide.gif)
+<br/>上图只是配置中部分功能,更多演示参照下面运行项目
 
 # vue-hash-calendar-slide
 
+# 1. 体验效果请先克隆仓库 地址: https://github.com/allsmy/vue-hash-calendar-slide
+# 2. 本地运行仓库，安装依赖命令： npm i 启动项目命令： npn run server
+# 3. 运行成功后浏览器访问： http://localhost:8080/
+# 4. 有很多配置属性懒得写出来，可自行修改参数查看效果
+# 5. 如果需要其他功能，可以自己修改代码，或者提问题
+
+- 更多更新查看提交日志：
+  https://github.com/allsmy/vue-hash-calendar-slide/commits/master
 - 增加禁用日期颜色控制
 - 增加外部传参控制上下滑动，方便复杂页面集成
 - 修复左右滑动过程中触发点击事件的bug
@@ -11,8 +20,6 @@
 - 支持手势滑动操作
 - 原生 js 开发，没引入第三方库
 - 上下滑动 切换 周/月 模式
-- 更多更新查看提交日志：
-https://github.com/allsmy/vue-hash-calendar-slide/commits/master
 
 # 安装使用说明
 
@@ -58,61 +65,5 @@ Vue.use(vueHashCalendarSlide)
 | minuteStep       | 间隔时间。（分钟的步长）                                                                                                                              |  Number  |       1        |    否    |
 | lang             | 选择的语言版本。可选值:['CN', 'EN']                                                                                                                   |  String  |       CN       |    否    |
 
-# 事件
-
-| 事件名称    | 说明                                                                                      | 参数                               |
-| :---------- | :---------------------------------------------------------------------------------------- | :--------------------------------- |
-| change      | 日期改变时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 日期改变时，选中的日期)     |
-| confirm     | 点击确认按钮时，触发该事件，dialog 模式中才有该按钮。（返回的日期格式取决于 format 属性） | (date: 点击确认按钮时，选中的日期) |
-| click       | 点击日期时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 当前点击的日期)             |
-| touchstart  | 日历滑动 start 事件，同于原生该事件。                                                     | （event: touch 事件）              |
-| touchmove   | 日历滑动 move 事件，同于原生该事件。                                                      | （event: touch 事件）              |
-| touchend    | 日历滑动 end 事件，同于原生该事件。                                                       | （event: touch 事件）              |
-| slidechange | 日历滑动的方向。返回值：right、left、up、down 。                                          | （direction: 滑动的方向）          |
-
-
-## Other
-
-- 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
-
-```
-<vue-hash-calendar-slide :visible.sync="isShowCalendar"></vue-hash-calendar-slide>
-
-//设置为true
-this.isShowCalendar = true;
-```
-
-- 想要返回标准的英文格式日期，format 属性应该怎样写？ `MM DD,YY at hh:mm F`
-
-```
-<vue-hash-calendar-slide format="MM DD,YY at hh:mm F"></vue-hash-calendar-slide>
-
-```
-
-- 想要返回 12 小时制的日期，format 属性应该怎样写？ 在格式化字符串后面加上大写 `F`
-
-```
-<vue-hash-calendar-slide format="YY/MM/DD hh:mm F"></vue-hash-calendar-slide>
-
-```
-
-- 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
-
-```
-// 例如禁用今日之后的所有日期
-
-/** vue模板文件 **/
-<vue-hash-calendar-slide :disabled-date="disabledDate"></vue-hash-calendar-slide>
-
-/** vue methods 中的方法 **/
-disabledDate(date) {
-    let timestamp = date.getTime();
-    if (timestamp > new Date().getTime()) {
-        return true
-    }
-
-    return false
-}
-```
 
 - 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 allsmy.com@gmail.com，或者 github 提交 issue。
